@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ThemeContext = createContext();
 
@@ -9,7 +8,7 @@ export const lightTheme = {
     primary: '#8875FF',
     primaryLight: '#9E8FFF',
     secondary: '#A3A3A3',
-    background: '#FAFAFA', // Figma spec: Light mode background
+    background: '#FAFAFA',
     surface: '#FFFFFF',
     card: '#FFFFFF',
     text: '#212121',
@@ -35,7 +34,7 @@ export const darkTheme = {
     primary: '#8875FF',
     primaryLight: '#9E8FFF',
     secondary: '#A3A3A3',
-    background: '#171823', // Figma spec: Dark mode background
+    background: '#171823',
     surface: '#1F202E',
     card: '#262738',
     text: '#FFFFFF',
@@ -51,7 +50,7 @@ export const darkTheme = {
     overlay: 'rgba(0, 0, 0, 0.7)',
     placeholder: '#666666',
     inputBackground: '#262738',
-    divider: '#2A2A2C',
+    divider: '#2A2A2A2C',
   },
 };
 
@@ -63,9 +62,9 @@ export const ThemeProvider = ({ children }) => {
     loadTheme();
   }, []);
 
-  const loadTheme = async () => {
+  const loadTheme = () => {
     try {
-      const savedTheme = await AsyncStorage.getItem('theme');
+      const savedTheme = localStorage.getItem('theme');
       if (savedTheme !== null) {
         setIsDark(savedTheme === 'dark');
       }
@@ -76,11 +75,11 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
-  const toggleTheme = async () => {
+  const toggleTheme = () => {
     try {
       const newTheme = !isDark;
       setIsDark(newTheme);
-      await AsyncStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
     } catch (error) {
       console.error('Error saving theme:', error);
     }
